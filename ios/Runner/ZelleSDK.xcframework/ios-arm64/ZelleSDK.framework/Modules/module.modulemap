@@ -1,0 +1,11 @@
+framework module ZelleSDK {
+  umbrella header "ZelleSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module ZelleSDK.Swift {
+    header "ZelleSDK-Swift.h"
+    requires objc
+}
