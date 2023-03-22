@@ -76,6 +76,12 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _backButton() async{
+    setState(() {
+      launchZelleUI = false ;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Map<String, String> map = new HashMap();
@@ -117,102 +123,99 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return SafeArea(
       child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              title: Center(child: Text('Embedded Native View')),
-            ),
-
-            SliverToBoxAdapter(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: 10,),
-                  Text("Welcome to Zelle"),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: _applicationNameController,
-                      focusNode: _applicationNameFocus,
-                      onFieldSubmitted: (v) {
-                        FocusScope.of(context).requestFocus(_baseUrlFocus);
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter application name',
-                      ),
-                    ),
-
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: _baseUrlController,
-                      focusNode: _baseUrlFocus,
-                      onFieldSubmitted: (v) {
-                        FocusScope.of(context).requestFocus(_institutionIdFocus);
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter baseUrl',
-                      ),
-                    ),
-
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: _institutionIdController,
-                      focusNode: _institutionIdFocus,
-                      onFieldSubmitted: (v) {
-                        FocusScope.of(context).requestFocus(_productFocus);
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter institutionId',
-                      ),
-                    ),
-
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: _productController,
-                      focusNode: _productFocus,
-                      onFieldSubmitted: (v) {
-                        FocusScope.of(context).requestFocus(_ssoKeyFocus);
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter product',
-                      ),
-                    ),
-
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: _ssoKeyController,
-                      focusNode: _ssoKeyFocus,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter ssoKey',
-                      ),
-                    ),
-
-                  ),
-                  ElevatedButton(onPressed: _lauchZelle, child:
-                  Text(
-                      "Launch Zelle"
-                  )),
-                  SizedBox(height: 10,),
-                  launchZelleUI ?
-                  SizedBox(height: MediaQuery.of(context).size.height*1.05, child: Platform.isAndroid ? _buildAndroid(context, params) : _buildIoS(context, params)): SizedBox()
-                ],
-              ),
-            )
-          ],
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text('Embedded Native View') ,
+          leading: BackButton(
+              color: Colors.white,
+              onPressed: _backButton ,
+          ),
+          centerTitle: true,
         ),
+        body:  !launchZelleUI ?Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 10,),
+            Text("Welcome to Zelle"),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                controller: _applicationNameController,
+                focusNode: _applicationNameFocus,
+                onFieldSubmitted: (v) {
+                  FocusScope.of(context).requestFocus(_baseUrlFocus);
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter application name',
+                ),
+              ),
+
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                controller: _baseUrlController,
+                focusNode: _baseUrlFocus,
+                onFieldSubmitted: (v) {
+                  FocusScope.of(context).requestFocus(_institutionIdFocus);
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter baseUrl',
+                ),
+              ),
+
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                controller: _institutionIdController,
+                focusNode: _institutionIdFocus,
+                onFieldSubmitted: (v) {
+                  FocusScope.of(context).requestFocus(_productFocus);
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter institutionId',
+                ),
+              ),
+
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                controller: _productController,
+                focusNode: _productFocus,
+                onFieldSubmitted: (v) {
+                  FocusScope.of(context).requestFocus(_ssoKeyFocus);
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter product',
+                ),
+              ),
+
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                controller: _ssoKeyController,
+                focusNode: _ssoKeyFocus,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter ssoKey',
+                ),
+              ),
+
+            ),
+            ElevatedButton(onPressed: _lauchZelle, child:
+            Text(
+                "Launch Zelle"
+            )),
+            SizedBox(height: 10,),
+          ],
+        ) : Platform.isAndroid ? _buildAndroid(context, params) : _buildIoS(context, params) ,
       ),
     );
   }
